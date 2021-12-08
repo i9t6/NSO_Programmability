@@ -1,0 +1,8 @@
+device,interface_type,interface_number,mtu,description
+c1,GigabitEthernet,0/0/10,,
+c1,GigabitEthernet,0/0/11,,
+c1,GigabitEthernet,0/0/12,,
+xr1,GigabitEthernet,0/7/0/0,,
+xr1,GigabitEthernet,0/7/0/1,,
+xr1,GigabitEthernet,0/7/0/2,,
+

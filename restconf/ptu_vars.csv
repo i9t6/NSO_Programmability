@@ -1,0 +1,8 @@
+device,interface_type,interface_number,mtu,description
+c1,GigabitEthernet,0/0/10,,NSO Test 1
+c1,GigabitEthernet,0/0/11,,NSO Test 2
+c1,GigabitEthernet,0/0/12,,NSO Test 3
+xr1,GigabitEthernet,0/7/0/0,,NSO Test 4
+xr1,GigabitEthernet,0/7/0/1,,NSO Test 5
+xr1,GigabitEthernet,0/7/0/2,,NSO Test 6
+
