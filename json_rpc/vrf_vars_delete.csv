@@ -1,0 +1,4 @@
+vrf_name,device,rt_primary,rt_export,rt_import,tipo,rm_export,rm_import
+vrf_010,,,,,,,
+vrf_020,,,,,,,
+vrf_030,,,,,,,

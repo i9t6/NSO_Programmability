@@ -1,0 +1,11 @@
+vrf_name,device,rt_primary,rt_export,rt_import,tipo,rm_export,rm_import
+vrf_010,xr0,500:601,,,,,
+vrf_010,xr1,500:601,,,,,
+vrf_010,c1,500:601,,,,,
+vrf_010,c0,500:601,,,,,
+vrf_020,c0,500:602,,,,,
+vrf_020,c1,500:602,,,,,
+vrf_020,xr0,500:602,,,,,
+vrf_020,xr1,500:602,,,,,
+vrf_030,c0,500:603,3:2,1230:123 5:5,xe,test,test
+vrf_030,xr0,500:603,6:6,6:6 6:7 6:8,xr,PASS,PASS
