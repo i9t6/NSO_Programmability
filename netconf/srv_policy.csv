@@ -1,0 +1,16 @@
+policy_name;cir;units;cir_xe;units_xe;devices
+#
+# --- Avoid duplicated polic_name ---
+#
+# Example of a new policy with devices or without devices
+10Mbps;10;mbps;10000;bps;['xr1','xr0','c0']
+#
+20Mbps;20;mbps;2000;bps;['xr1','xr0','c0','xr1','c1']
+#
+# Different policies by device type (XR or  XE)
+30Mbps;30;mbps;;;['xr0','xr1']
+#
+# if policy already exist, it can be updated
+50Mbps;50;mbps;50000;bps;['xr1','c1']
+60Mbps;10;mbps;10000;bps;['xr1','c0']
+70Mbps;10;mbps;10000;bps;['xr1','c1']

@@ -1,0 +1,12 @@
+    <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+      <services xmlns="http://tail-f.com/ns/ncs">
+      <Srv_Policy_Map xmlns="http://example.com/Srv_Policy_Map">
+        <policy_name>{policy_name}</policy_name>
+        <cir>{cir}</cir>
+        <units>{units}</units>
+        <cir_xe>{cir_xe}</cir_xe>
+        <units_xe>{units_xe}</units_xe>        
+        <device>{devices}</device>
+      </Srv_Policy_Map>
+      </services>
+    </config>

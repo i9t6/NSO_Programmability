@@ -1,0 +1,11 @@
+policy_name;devices
+# 
+10Mbps;
+# Despues de los cambios
+#10Mbps;['xr0','xr1','c0','c1']
+#20Mbps;['xr0','c0','XRv-1']
+20Mbps;
+30Mbps;
+50Mbps;
+60Mbps;
+70Mbps;

@@ -1,0 +1,8 @@
+<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <services xmlns="http://tail-f.com/ns/ncs">
+  <Srv_Policy_Map operation="delete" xmlns="http://example.com/Srv_Policy_Map">
+    <policy_name>{policy_name}</policy_name>
+    <device operation="delete">{devices}</device>
+  </Srv_Policy_Map>
+  </services>
+</config>
