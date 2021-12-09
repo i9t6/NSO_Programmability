@@ -1,0 +1,2 @@
+[nso]
+172.16.1.122 ansible_user="admin" ansible_password="admin" ansible_ssh_password="admin" url="https://172.16.1.122:8443/jsonrpc"

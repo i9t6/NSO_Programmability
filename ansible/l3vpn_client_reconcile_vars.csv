@@ -1,0 +1,2 @@
+client,client_id,site,circuit_id,device,tipo,vrf,prefix,mask,tag,interface_type,ifnumber,policy_map
+cliente_1003,10003,10003,10013,XRv-1,iosxr,utran2,10.11.39.0,255.255.255.252,3046,GigabitEthernet,0/0/0/3,100Mbps

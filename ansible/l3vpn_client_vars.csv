@@ -1,0 +1,6 @@
+client,client_id,site,circuit_id,device,tipo,vrf,prefix,mask,tag,interface_type,ifnumber,policy_map
+cliente_1001,10001,10001,10001,xr1,iosxr,vrf_010,10.10.39.0,255.255.255.252,3535,GigabitEthernet,0/0/0/3,10Mbps
+cliente_1001,10001,10001,10002,xr1,iosxr,vrf_020,10.11.39.0,255.255.255.252,3536,GigabitEthernet,0/7/0/0,20Mbps
+cliente_1002,10002,10002,10003,c1,iosxe,vrf_010,10.11.39.0,255.255.255.252,3536,GigabitEthernet,0/1/1,20Mbps
+cliente_1002,10002,10002,10004,xr1,iosxr,vrf_020,10.12.39.0,255.255.255.252,3537,GigabitEthernet,0/0/0/4,20Mbps
+cliente_1002,10002,10002,10005,xr1,iosxr,vrf_010,10.13.39.0,255.255.255.252,3537,GigabitEthernet,0/0/1/1,20Mbps
