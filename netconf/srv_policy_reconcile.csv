@@ -1,4 +1,3 @@
 policy_name;cir;units;cir_xe;units_xe;devices
 # Reconcile
-40Mbps;40;mbps;4000;bps;['xr0','xr1']
-
+100Mbps;100;mbps;;;['XRv-1']

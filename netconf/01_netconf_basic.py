@@ -117,7 +117,7 @@ def fill_template_qos(var_template_file,var_data, var_verbose):
         dic[key]="\n".join(list)
     return dic
 
-def config_netconf(var_dic_templates,):
+def config_netconf(var_dic_templates):
     with manager.connect(**nso_srv) as m:
         for key, case in var_dic_templates.items():
             try:

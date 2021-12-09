@@ -1,3 +1,2 @@
 device,interface_type,interface_number,mtu,description
-xr0,GigabitEthernet,10/1,,***** Bun100 HACIA IDC-ACC ******
-xr0,GigabitEthernet,10/0,9014,prueba
+XRv-1,GigabitEthernet,0/0/0/3,9014,prueba
