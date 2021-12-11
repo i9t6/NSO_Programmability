@@ -16,10 +16,10 @@
 # 
 # AUTHOR(s): Francisco Quiroz <frquiroz@cisco.com>
 
+from typing import Reversible
 from ncclient import manager
 from ncclient.xml_ import to_ele
 import xmltodict
-import json
 import csv
 import re
 import sys
@@ -28,9 +28,6 @@ from lxml import etree
 import logging
 from datetime import datetime
 
-import requests
-import urllib3
-urllib3.disable_warnings()
 
 date = datetime.now().date().strftime('%Y-%d-%m')
 console_formartter = logging.Formatter('%(asctime)s:module:%(module)s>> %(message)s')
@@ -125,45 +122,61 @@ def config_netconf(var_dic_templates):
                 # merge also usefull for reconcile, similar to no-network
                 netconf_reply = m.edit_config(case, target="running", default_operation='merge')        
             except:
-                print(f"Error {key}, Possible service or equipment not existing")
+                print(f"Error {key}, Possible service instance/device not existing or not in sync")
             else:
                 if netconf_reply.ok:
                     print(f"Service: {key} : Change Completed")
     return 'Netconf config: Done'
 
+def device_action(var_device, var_action):
+    action  = etree.Element("action",  nsmap = {None: 'http://tail-f.com/ns/netconf/actions/1.0'})
+    data = etree.SubElement(action, "data")
+    devices = etree.SubElement(data, "devices", nsmap = {None: 'http://tail-f.com/ns/ncs'})
+    device = etree.SubElement(devices, "device")
+    name = etree.SubElement(device, "name").text = f"{var_device}"
+    check = etree.SubElement(device,f"{var_action}")
+    try:
+        with manager.connect(**nso_srv) as m:
+            response = m.dispatch(action)
+    except Exception as e:
+        my_logger.warning(f" exception {str(e)}")
+        response = False
+    return response
+
 def reconcile(var_dic_reconcile):
-    with manager.connect(**nso_srv) as m:
-        for key, info in var_dic_reconcile.items():
-            try:
-                # merge also usefull for reconcile, similar to no-network
-                action = etree.Element("action",  nsmap = {None: 'http://tail-f.com/ns/netconf/actions/1.0'})
-                data = etree.SubElement(action, "data")
-                srvs = etree.SubElement(data, "services", nsmap = {None: 'http://tail-f.com/ns/ncs'})
-                srv_pol_map = etree.SubElement(srvs, "Srv_Policy_Map",nsmap = {None: 'http://example.com/Srv_Policy_Map'})
-                pn = etree.SubElement(srv_pol_map, "policy_name").text = f"{key}"
-                rd = etree.SubElement(srv_pol_map, "re-deploy")
-                rc = etree.SubElement(rd,"reconcile")
+    for key, info in var_dic_reconcile.items():
+        action = etree.Element("action",  nsmap = {None: 'http://tail-f.com/ns/netconf/actions/1.0'})
+        data = etree.SubElement(action, "data")
+        srvs = etree.SubElement(data, "services", nsmap = {None: 'http://tail-f.com/ns/ncs'})
+        srv_pol_map = etree.SubElement(srvs, "Srv_Policy_Map",nsmap = {None: 'http://example.com/Srv_Policy_Map'})
+        pn = etree.SubElement(srv_pol_map, "policy_name").text = f"{key}"
+        rd = etree.SubElement(srv_pol_map, "re-deploy")
+        rc = etree.SubElement(rd,"reconcile")
+        try:                   
+            with manager.connect(**nso_srv) as m:
                 response = m.dispatch(action)
-                print(f" reconcile {response.xml}")
-                for device in info['devices']:
-                    check_sync_config(device)
-            except Exception as e:
-                print(f" exception {str(e)}")
+            my_logger.warning(f" reconcile {response.xml}")
+            for device in info['devices']:
+                response = device_action(device, 'compare-config')
+                my_logger.warning(f" {device} resultado \n {response.xml} \n")
+                print(f"{device} config sync checked")
+        except Exception as e:
+            my_logger.warning(f" exception {str(e)}")
     return '\nReconcile complete\n'
 
-def check_sync_config(var_device):
-    with manager.connect(**nso_srv) as m:
-        for i in ['compare-config','check-sync']:
-            action  = etree.Element("action",  nsmap = {None: 'http://tail-f.com/ns/netconf/actions/1.0'})
-            data = etree.SubElement(action, "data")
-            devices = etree.SubElement(data, "devices", nsmap = {None: 'http://tail-f.com/ns/ncs'})
-            device = etree.SubElement(devices, "device")
-            name = etree.SubElement(device, "name").text = f"{var_device}"
-            check = etree.SubElement(device,f"{i}")
-            response = m.dispatch(action)
-            print(f" {i} resultado \n {response.xml} \n")
-    return 'ok'
-
+def check_sync(var_dic_reconcile):
+    for key, info in var_dic_reconcile.items():
+        for device in eval(info['devices']):
+            if 'out-of-sync' in device_action(device,'check-sync').xml:
+                synk_now = input(f"\t {device} Not in sync. Sync now? (yes/no):")
+                if synk_now in ['y','Y','yes','YES','Yes']:
+                    if 'true' in device_action(device, 'sync-from').xml:
+                        print(f"\t Config Sync, ready to continue ")
+                    else:           
+                        print(f"\t {device} not in sync")
+                        continue
+                else:
+                    continue
 
 def main():
     try:
@@ -210,6 +223,7 @@ def main():
             # this is two steps process, configure then reconcile
             data_reconcile = read_csv('srv_policy_reconcile.csv','policy_name')
             my_logger.warning(f"{data_reconcile}\n-----------------------")
+            check_sync(data_reconcile)
             data_fixed = fix_device_list('Srv_Policy_Map','policy_name', data_reconcile, 'config')
             my_logger.warning(f"{data_fixed}\n-----------------------")
             dic_templates = fill_template_qos('config_qos.xml', data_fixed, verbose) 
