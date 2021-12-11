@@ -16,9 +16,8 @@
 # 
 # AUTHOR(s): Francisco Quiroz <frquiroz@cisco.com>
 
-from typing import Reversible
+
 from ncclient import manager
-from ncclient.xml_ import to_ele
 import xmltodict
 import csv
 import re
