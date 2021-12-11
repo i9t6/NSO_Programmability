@@ -165,7 +165,12 @@ def reconcile(var_dic_reconcile):
 
 def check_sync(var_dic_reconcile):
     for key, info in var_dic_reconcile.items():
-        for device in eval(info['devices']):
+        my_logger.warning(f"{key} {info}")
+        if not type(info['devices']) == type([]):
+            temp_list = eval(info['devices'])
+        else:
+            temp_list = info['devices']
+        for device in temp_list:
             if 'out-of-sync' in device_action(device,'check-sync').xml:
                 synk_now = input(f"\t {device} Not in sync. Sync now? (yes/no):")
                 if synk_now in ['y','Y','yes','YES','Yes']:
@@ -204,6 +209,7 @@ def main():
             data = read_csv('srv_policy.csv','policy_name')
             my_logger.warning(f"{data}\n-----------------------")
             data_fixed = fix_device_list('Srv_Policy_Map','policy_name', data, 'config')
+            check_sync(data)
             my_logger.warning(f"{data_fixed}\n-----------------------")
             dic_templates = fill_template_qos('config_qos.xml', data_fixed, verbose) 
             print(config_netconf(dic_templates),"\n-----------------------")
